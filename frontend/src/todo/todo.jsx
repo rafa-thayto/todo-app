@@ -1,7 +1,12 @@
 import React, { Component } from 'react'
+import axios from 'axios'
+
 import PageHeader from '../template/pageHeader'
 import TodoForm from './todoForm'
 import TodoList from './todoList'
+
+
+const URL = 'http://localhost:3003/api/todos';
 
 export default class Todo extends Component {
     constructor(props) {
@@ -12,12 +17,19 @@ export default class Todo extends Component {
         this.handleAdd = this.handleAdd.bind(this);
     }
     
+    refresh() {
+        axios.get(`${URL}?sort=-createdAt`)
+            .then(resp => console.log(resp.data));
+    }
+    
     handleChange(e) {
-        // this.setState({...this.state, description: e.target.value });
+        this.setState({...this.state, description: e.target.value });
     }
     
     handleAdd() {
-        
+        const description = this.state.description
+        axios.post(URL, { description })
+            .then(resp => console.log('Funcionou'))
     }
     
     render() {
